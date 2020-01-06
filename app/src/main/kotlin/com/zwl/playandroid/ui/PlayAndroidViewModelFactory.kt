@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zwl.playandroid.data.PlayAndroidRepository
 import com.zwl.playandroid.ui.browser.BrowserViewModel
+import com.zwl.playandroid.ui.square.SquareViewModel
 
 /**
  * Create: 2020-01-02 12:08
@@ -20,6 +21,9 @@ class PlayAndroidViewModelFactory(private val repository: PlayAndroidRepository)
         }else if (modelClass.isAssignableFrom(BrowserViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return BrowserViewModel(repository) as T
+        }else if (modelClass.isAssignableFrom(SquareViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return SquareViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

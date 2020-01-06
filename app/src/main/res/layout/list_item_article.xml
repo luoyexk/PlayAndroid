@@ -12,7 +12,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_80">
+        android:layout_height="@dimen/dp_80"
+        android:paddingStart="@dimen/default_padding"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingEnd="@dimen/default_padding"
+        android:paddingBottom="@dimen/dp_8">
 
         <TextView
             android:id="@+id/title"
@@ -26,14 +30,39 @@
             tools:text="Android组件化跨进程通信框架Andromeda解析" />
 
         <TextView
+            android:id="@+id/author"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:text="@{(article.author == null || article.author.length() ==0)?(@string/shared_person + article.shareUser):(@string/author_person + article.author)}"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            tools:text="弘扬" />
+
+        <TextView
+            android:id="@+id/category"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_padding"
+            android:text="@{@string/category_ + article.superChapterName + '/' + article.chapterName}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintStart_toEndOf="@+id/author"
+            app:layout_constraintTop_toTopOf="@+id/author"
+            tools:text="分类: 公众号/郭林" />
+
+        <TextView
+            android:id="@+id/time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{article.niceDate}"
-            android:textSize="@dimen/sp_14"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textSize="@dimen/sp_12"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title"
+            app:layout_constraintTop_toBottomOf="@+id/author"
             tools:text="9分前" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

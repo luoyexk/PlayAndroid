@@ -7,11 +7,7 @@ import com.zwl.playandroid.db.AppDatabase
 import com.zwl.playandroid.db.PlayAndroidLocalCache
 import com.zwl.playandroid.http.PlayAndroidService
 import com.zwl.playandroid.ui.PlayAndroidViewModelFactory
-import com.zwl.playandroid.ui.SimpleDataViewModelFactory
-import com.zwl.playandroid.ui.login.AccountViewModel
 import com.zwl.playandroid.ui.login.AccountViewModelFactory
-import com.zwl.playandroid.ui.square.SquareVMFactory
-import com.zwl.playandroid.ui.square.SquareViewModel
 import java.util.concurrent.Executors
 
 /**
@@ -55,10 +51,5 @@ object Injections {
         val database = AppDatabase.getInstance(context, dbName)
         return PlayAndroidLocalCache(database, Executors.newSingleThreadExecutor())
     }
-
-    fun providerSquareViewModelFactory(dbName: String): ViewModelProvider.Factory {
-        return SquareVMFactory()
-    }
-
 
 }

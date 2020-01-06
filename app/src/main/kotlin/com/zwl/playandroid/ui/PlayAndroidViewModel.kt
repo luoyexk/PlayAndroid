@@ -1,5 +1,6 @@
 package com.zwl.playandroid.ui
 
+import android.text.format.DateUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,11 +9,10 @@ import com.zwl.playandroid.base.BaseViewModel
 import com.zwl.playandroid.data.PlayAndroidRepository
 import com.zwl.playandroid.db.entity.article.Article
 
-class PlayAndroidViewModel(val repository: PlayAndroidRepository) : BaseViewModel() {
+const val VISIBLE_THRESHOLD = 5
+const val REQUEST_MORE_INTERVAL = 3 * DateUtils.SECOND_IN_MILLIS
 
-    companion object {
-        private const val VISIBLE_THRESHOLD = 5
-    }
+class PlayAndroidViewModel(val repository: PlayAndroidRepository) : BaseViewModel() {
 
     private val request: MutableLiveData<Int> = MutableLiveData(0)
     val articleList: LiveData<MutableList<Article>> = repository.requestPage()
