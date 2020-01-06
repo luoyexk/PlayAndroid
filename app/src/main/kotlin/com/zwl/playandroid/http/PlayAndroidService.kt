@@ -88,6 +88,12 @@ interface PlayAndroidService {
      */
     @GET("article/list/{page}/json")
     fun fetchHomeArticleList(@Path("page") page: Int): Call<ResponseArticleList>
+
+    // ============================== 10.广场相关 ==============================
+
+    @GET("user_article/list/{page}/json")
+    fun fetchSquareList(@Path("page") page: Int): Call<ResponseArticleList>
+
 }
 
 private fun createError(code: Int, t: Throwable): ResponseError {
@@ -106,6 +112,30 @@ fun fetchHomeArticleList(
     service.fetchHomeArticleList(page).enqueue(object : Callback<ResponseArticleList> {
         override fun onFailure(call: Call<ResponseArticleList>, t: Throwable) {
             onError(createError(FETCH_HOME_ARTICLE_LIST_CODE, t))
+        }
+
+        override fun onResponse(
+            call: Call<ResponseArticleList>,
+            response: Response<ResponseArticleList>
+        ) {
+            if (response.isSuccessful) {
+                onSuccess(response.body()?.data)
+            } else {
+                onError(UNKNOWN_ERROR)
+            }
+        }
+    })
+}
+
+fun fetchSquareList(
+    service: PlayAndroidService,
+    page: Int,
+    onSuccess: (data: ArticleData?) -> Unit,
+    onError: (error: ResponseError) -> Unit
+) {
+    service.fetchSquareList(page).enqueue(object : Callback<ResponseArticleList> {
+        override fun onFailure(call: Call<ResponseArticleList>, t: Throwable) {
+            onError(createError(FETCH_SQUARE_ARTICLE_LIST_CODE, t))
         }
 
         override fun onResponse(
