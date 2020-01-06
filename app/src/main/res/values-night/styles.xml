@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Base.Theme.PlayAndroid" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/play_android_green_900</item>
+        <item name="colorOnPrimary">@color/play_android_yellow_300</item>
+        <item name="colorPrimaryDark">@color/play_android_gray_50_a600</item>
+        <item name="colorOnSurface">@color/play_android_white</item>
+        <item name="colorAccent">@color/play_android_green_300</item>
+        <item name="colorSurface">@color/play_android_green_900</item>
+        <item name="colorSecondary">@color/play_android_yellow_300</item>
+        <item name="android:colorBackground">@color/play_android_green_900</item>
+    </style>
+</resources>

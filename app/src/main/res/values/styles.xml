@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="Base.Theme.PlayAndroid" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/play_android_green_500</item>
+        <item name="colorOnPrimary">@color/play_android_yellow_500</item>
+        <item name="colorPrimaryDark">@color/play_android_green_700</item>
+        <item name="colorOnSurface">@color/play_android_black</item>
+        <item name="colorAccent">@color/play_android_green_700</item>
+        <item name="colorSurface">@color/play_android_gray_50</item>
+        <item name="colorSecondary">@color/play_android_yellow_500</item>
+<!--        <item name="android:colorBackground">@color/play_android_green_500</item>-->
+    </style>
+
+    <style name="Theme.PlayAndroid" parent="Base.Theme.PlayAndroid" />
+
+</resources>

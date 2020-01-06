@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/homeViewPagerFragment">
+
+    <fragment
+        android:id="@+id/homeViewPagerFragment"
+        android:name="com.zwl.playandroid.ui.main.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/home_fragment">
+
+        <action
+            android:id="@+id/action_homeViewPagerFragment_to_browserFragment"
+            app:destination="@id/browserFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
+    <!--<argument
+            android:name="link"
+            app:argType="string" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <argument
+            android:name="author"
+            app:argType="string" />
+        <argument
+            android:name="shareUser"
+            app:argType="string" />-->
+    <fragment
+        android:id="@+id/browserFragment"
+        android:name="com.zwl.playandroid.ui.browser.BrowserFragment"
+        android:label="BrowserFragment"
+        tools:layout="@layout/browser_fragment">
+        <argument
+            android:name="article"
+            app:argType="com.zwl.playandroid.db.entity.article.Article" />
+    </fragment>
+
+</navigation>
