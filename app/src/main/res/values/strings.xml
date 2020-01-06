@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PlayAndroid</string>
+    <string name="app_name">WanAndroid</string>
     <string name="home_vp_f_tag">com.zwl.playandroid.ui.main.HomeViewPagerFragment</string>
 
     <!-- home menu title-->
@@ -11,4 +11,6 @@
 
     <string name="login">登陆</string>
     <string name="register">注册</string>
+    <string name="open_in_browser">浏览器打开</string>
+    <string name="menu_share">分享链接</string>
 </resources>

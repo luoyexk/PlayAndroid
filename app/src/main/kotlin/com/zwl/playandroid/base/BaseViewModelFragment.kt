@@ -1,14 +1,9 @@
 package com.zwl.playandroid.base
 
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import com.zwl.playandroid.Injections
-import com.zwl.playandroid.app.DEFAULT_DB_NAME
 import com.zwl.playandroid.ui.DatabaseNameViewModel
-import com.zwl.playandroid.ui.PlayAndroidViewModel
 
 /**
  * Create: 2019-12-31 11:36
@@ -23,6 +18,8 @@ abstract class BaseViewModelFragment<VM : BaseViewModel> : BaseFragment() {
     open lateinit var viewModel: VM
 
     abstract fun initViewModel(dbName: String): VM
+
+    open protected fun modelCreated(vm: VM) {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +37,7 @@ abstract class BaseViewModelFragment<VM : BaseViewModel> : BaseFragment() {
             })
         databaseNameViewModel.dbName.value?.also {
             viewModel = initViewModel(it)
+            modelCreated(viewModel)
         }
     }
 

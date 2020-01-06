@@ -34,6 +34,13 @@ object Injections {
         return PlayAndroidViewModelFactory(providerRepository(context, dbName))
     }
 
+    fun provideBrowserViewModelFactory(
+        context: Context,
+        dbName: String
+    ): ViewModelProvider.Factory {
+        return PlayAndroidViewModelFactory(providerRepository(context, dbName))
+    }
+
     /**
      * 创建数据仓库
      */

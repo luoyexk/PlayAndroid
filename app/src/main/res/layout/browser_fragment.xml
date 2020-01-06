@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="article"
-            type="com.zwl.playandroid.db.entity.article.Article" />
+            name="viewModel"
+            type="com.zwl.playandroid.ui.browser.BrowserViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -16,13 +16,17 @@
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                app:expandedTitleTextAppearance="@android:color/transparent"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:title="@{article.title}"
+                app:title="@{viewModel.article.title}"
+                app:titleEnabled="true"
                 app:toolbarId="@id/toolbar">
 
                 <androidx.appcompat.widget.Toolbar
@@ -30,7 +34,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:elevation="@dimen/dp_1"
-                    app:layout_collapseMode="parallax"
+                    android:fitsSystemWindows="true"
+                    app:layout_collapseMode="pin"
+                    app:title="@string/open_in_browser"
+                    app:menu="@menu/menu_browser"
                     app:navigationIcon="@drawable/ic_arrow_back_black"
                     app:titleTextColor="@color/black_333" />
 

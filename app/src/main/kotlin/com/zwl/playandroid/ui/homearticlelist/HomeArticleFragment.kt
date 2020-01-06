@@ -8,6 +8,7 @@ import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -36,6 +37,7 @@ class HomeArticleFragment : BaseViewModelFragment<PlayAndroidViewModel>() {
         val binding = DataBindingUtil.inflate<HomeArticleFragmentBinding>(inflater, R.layout.home_article_fragment, container, false).apply {
             homeRecyclerView?.setUp(HomeArticleListAdapter())
         }
+        (activity as AppCompatActivity).setSupportActionBar(binding.toolBar)
         return binding.root
     }
 
