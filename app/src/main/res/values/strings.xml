@@ -11,6 +11,7 @@
 
     <string name="login">登陆</string>
     <string name="register">注册</string>
+    <string name="default_username">username</string>
     <string name="open_in_browser">浏览器打开</string>
     <string name="menu_share">分享链接</string>
     <string name="no_articles">没有文章😓</string>
@@ -20,4 +21,12 @@
     <string name="author_person">作者:</string>
     <string name="category_">分类:</string>
     <string name="function_processing">功能开发中.😆😁😁</string>
+    <string name="favourite">收藏</string>
+
+    <string name="no_account_register"><![CDATA[
+        没账号? 去<font color="#333333">注册</font>
+    ]]></string>
+    <string name="has_account_login"><![CDATA[
+    已有账号 <font color="#333333">登陆</font>
+    ]]></string>
 </resources>

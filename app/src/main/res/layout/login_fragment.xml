@@ -1,22 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
-        <variable
-            name="userName"
-            type="String" />
+        <import type="android.view.View" />
+
+        <import type="com.zwl.playandroid.annotation.AccountType" />
 
         <variable
-            name="password"
-            type="String" />
+            name="callback"
+            type="com.zwl.playandroid.ui.login.LoginFragment.Callback" />
+
+        <variable
+            name="viewModel"
+            type="com.zwl.playandroid.ui.login.AccountViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:padding="@dimen/default_padding">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.2" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.7" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_name"
@@ -25,12 +46,12 @@
             android:hint="请输入用户名"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/guide1">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={userName}" />
+                android:text="@={viewModel.userName}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -40,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_padding"
             android:hint="请输入密码"
+            app:endIconMode="password_toggle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/layout_name">
@@ -47,16 +69,53 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={password}" />
+                android:inputType="textPassword"
+                android:text="@={viewModel.password}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/re_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_padding"
+            android:hint="请再次输入密码"
+            android:inputType="textPassword"
+            android:visibility="@{viewModel.modeType == AccountType.REGISTER_TYPE ? View.VISIBLE : View.GONE}"
+            app:endIconMode="password_toggle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_password">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:text="@={viewModel.confirmPassword}" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
+            android:id="@+id/ensure"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/default_padding"
-            android:text="@string/login"
+            android:onClick="@{() -> callback.ensure(viewModel.userName,viewModel.password,viewModel.confirmPassword)}"
+            android:text="@{viewModel.modeType == AccountType.REGISTER_TYPE ? @string/register : @string/login}"
             app:layout_constraintEnd_toEndOf="@id/layout_password"
-            app:layout_constraintTop_toBottomOf="@id/layout_password" />
+            app:layout_constraintTop_toBottomOf="@id/guide2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> callback.changeType(viewModel.modeType)}"
+            android:paddingStart="@dimen/default_padding"
+            android:paddingTop="@dimen/dp_8"
+            android:paddingBottom="@dimen/default_padding"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ensure"
+            app:renderHtml="@{viewModel.modeType == AccountType.REGISTER_TYPE ? @string/has_account_login : @string/no_account_register}"
+            tools:text="@string/no_account_register" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

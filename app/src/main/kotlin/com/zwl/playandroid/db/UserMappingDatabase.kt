@@ -14,6 +14,7 @@ object UserMappingDatabase {
 
     private const val KEY_FILE_NAME = "UserMapping"
     private const val KEY_CURRENT_USER = "curUserName"
+    private const val KEY_COOKIE = "cookie"
     private lateinit var sharedPreferences: EncryptedSharedPreferences
     fun setUp(context: Context) {
         val masterKeyAlias = "alias_play_android"
@@ -52,6 +53,24 @@ object UserMappingDatabase {
         val userKey = createTokenKey(currentUserName)
         val token = sharedPreferences.getString(userKey, null) ?: return null
         return convertToken(token)
+    }
+
+    /**
+     * 保存当前登陆用户的cookie
+     */
+    fun saveCookie(cookie: String) {
+        val editor = sharedPreferences.edit()
+        editor.apply {
+            putString(KEY_COOKIE, cookie)
+        }.apply()
+    }
+
+    fun getCookie(): String? {
+        return sharedPreferences.getString(KEY_COOKIE, null)
+    }
+
+    fun removeCookie() {
+        sharedPreferences.edit().remove(KEY_COOKIE).apply()
     }
 
 }

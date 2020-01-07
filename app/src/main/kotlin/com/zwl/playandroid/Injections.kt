@@ -7,7 +7,6 @@ import com.zwl.playandroid.db.AppDatabase
 import com.zwl.playandroid.db.PlayAndroidLocalCache
 import com.zwl.playandroid.http.PlayAndroidService
 import com.zwl.playandroid.ui.PlayAndroidViewModelFactory
-import com.zwl.playandroid.ui.login.AccountViewModelFactory
 import java.util.concurrent.Executors
 
 /**
@@ -18,10 +17,6 @@ import java.util.concurrent.Executors
  * @author Zouweilin
  */
 object Injections {
-
-    fun providerAccountViewModelFactory(): ViewModelProvider.Factory {
-        return AccountViewModelFactory()
-    }
 
     fun providerAppViewModelFactory(
         context: Context,

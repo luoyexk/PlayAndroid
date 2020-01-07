@@ -1,13 +1,17 @@
 package com.zwl.playandroid.http
 
+import android.util.Log
 import com.zwl.playandroid.BuildConfig
+import com.zwl.playandroid.base.BaseResponse
+import com.zwl.playandroid.base.RESPONSE_SUCCESS
+import com.zwl.playandroid.db.User
+import com.zwl.playandroid.db.entity.account.Login
+import com.zwl.playandroid.db.entity.account.ResponseLogin
 import com.zwl.playandroid.db.entity.article.ArticleData
 import com.zwl.playandroid.db.entity.article.ResponseArticleList
-import com.zwl.playandroid.http.rx.RxUtil
-import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.android.plugins.RxAndroidPlugins
-import io.reactivex.disposables.Disposable
+import okhttp3.Cookie
+import okhttp3.CookieJar
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -16,8 +20,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.*
 import java.util.concurrent.TimeUnit
 
 
@@ -32,12 +35,23 @@ interface PlayAndroidService {
 
     companion object {
 
+        private val cookieStore: HashMap<String, MutableList<Cookie>> = HashMap()
         private fun createOkHttpClient(): OkHttpClient {
             val timeOut = 10L
             val logger = HttpLoggingInterceptor()
-            logger.level = HttpLoggingInterceptor.Level.BASIC
+            logger.level = HttpLoggingInterceptor.Level.BODY
 
             return OkHttpClient.Builder()
+                .cookieJar(object : CookieJar {
+                    override fun saveFromResponse(url: HttpUrl, cookies: MutableList<Cookie>) {
+                        cookieStore[url.host()] = cookies;
+                    }
+
+                    override fun loadForRequest(url: HttpUrl): MutableList<Cookie> {
+                        val cookies = cookieStore[url.host()]
+                        return cookies ?: mutableListOf()
+                    }
+                })
                 .connectTimeout(timeOut, TimeUnit.SECONDS)
                 .readTimeout(timeOut, TimeUnit.SECONDS)
                 .writeTimeout(timeOut, TimeUnit.SECONDS)
@@ -94,6 +108,16 @@ interface PlayAndroidService {
     @GET("user_article/list/{page}/json")
     fun fetchSquareList(@Path("page") page: Int): Call<ResponseArticleList>
 
+    /**
+     * key:username
+     * key:password
+     */
+    @FormUrlEncoded
+    @POST("user/login")
+    fun login(@FieldMap map: MutableMap<String, String>): Call<ResponseLogin>
+
+    @GET("lg/collect/list/{page}/json")
+    fun fetchFavouriteArticles(@Path("page") page: Int): Call<ResponseArticleList>
 }
 
 private fun createError(code: Int, t: Throwable): ResponseError {
@@ -103,12 +127,7 @@ private fun createError(code: Int, t: Throwable): ResponseError {
     return getResponseError(code)
 }
 
-fun fetchHomeArticleList(
-    service: PlayAndroidService,
-    page: Int,
-    onSuccess: (data: ArticleData?) -> Unit,
-    onError: (error: ResponseError) -> Unit
-) {
+fun fetchHomeArticleList(service: PlayAndroidService, page: Int, onSuccess: (data: ArticleData?) -> Unit, onError: (error: ResponseError) -> Unit) {
     service.fetchHomeArticleList(page).enqueue(object : Callback<ResponseArticleList> {
         override fun onFailure(call: Call<ResponseArticleList>, t: Throwable) {
             onError(createError(FETCH_HOME_ARTICLE_LIST_CODE, t))
@@ -127,12 +146,7 @@ fun fetchHomeArticleList(
     })
 }
 
-fun fetchSquareList(
-    service: PlayAndroidService,
-    page: Int,
-    onSuccess: (data: ArticleData?) -> Unit,
-    onError: (error: ResponseError) -> Unit
-) {
+fun fetchSquareList(service: PlayAndroidService, page: Int, onSuccess: (data: ArticleData?) -> Unit, onError: (error: ResponseError) -> Unit) {
     service.fetchSquareList(page).enqueue(object : Callback<ResponseArticleList> {
         override fun onFailure(call: Call<ResponseArticleList>, t: Throwable) {
             onError(createError(FETCH_SQUARE_ARTICLE_LIST_CODE, t))
@@ -146,6 +160,49 @@ fun fetchSquareList(
                 onSuccess(response.body()?.data)
             } else {
                 onError(UNKNOWN_ERROR)
+            }
+        }
+    })
+}
+
+fun login(service: PlayAndroidService, user: User, onSuccess: (data: Login?, cookie: String?) -> Unit, onError: (error: ResponseError) -> Unit) {
+    // "username" to user.userName, "password" to user.password
+    val body = mutableMapOf<String, String>().apply {
+        put("username", user.userName)
+        put("password", user.password)
+    }
+    service.login(body).enqueue(object : Callback<ResponseLogin> {
+        override fun onFailure(call: Call<ResponseLogin>, t: Throwable) {
+            onError(createError(LOGIN_CODE, t))
+        }
+
+        override fun onResponse(call: Call<ResponseLogin>, response: Response<ResponseLogin>) {
+            val responseLogin = response.body()
+            if (response.isSuccessful && responseLogin != null) {
+                if (responseLogin.errorCode == RESPONSE_SUCCESS) {
+                    val headers = response.headers()
+                    val cookie = headers.get("Set-Cookie")
+                    onSuccess(responseLogin.data, cookie)
+                } else {
+                    onError(ResponseError(responseLogin.errorCode, responseLogin.errorMsg))
+                }
+            } else {
+                onError(UNKNOWN_ERROR)
+            }
+            Log.e("zzzz"," - onResponse -> ${responseLogin?.errorMsg}" )
+        }
+    })
+}
+
+fun fetchFavourite(service: PlayAndroidService, page: Int, onSuccess: (data: ArticleData?) -> Unit, onError: (error: ResponseError) -> Unit) {
+    service.fetchFavouriteArticles(page).enqueue(object : Callback<ResponseArticleList> {
+        override fun onFailure(call: Call<ResponseArticleList>, t: Throwable) {
+            onError(createError(FAVOURITE_CODE, t))
+        }
+
+        override fun onResponse(call: Call<ResponseArticleList>, response: Response<ResponseArticleList>) {
+            if (response.isSuccessful) {
+                onSuccess(response.body()?.data)
             }
         }
     })

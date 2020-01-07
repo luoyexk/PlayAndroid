@@ -1,16 +1,17 @@
 package com.zwl.playandroid.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
-import com.zwl.playandroid.annotation.REFRESH
 import com.zwl.playandroid.annotation.REQUEST_MORE
 import com.zwl.playandroid.annotation.RequestArticleType
+import com.zwl.playandroid.db.CookieHelper
 import com.zwl.playandroid.db.PlayAndroidLocalCache
+import com.zwl.playandroid.db.User
+import com.zwl.playandroid.db.UserMappingDatabase
+import com.zwl.playandroid.db.entity.account.Login
 import com.zwl.playandroid.db.entity.article.Article
 import com.zwl.playandroid.db.entity.article.ArticleData
-import com.zwl.playandroid.http.PlayAndroidService
-import com.zwl.playandroid.http.ResponseError
-import com.zwl.playandroid.http.fetchHomeArticleList
-import com.zwl.playandroid.http.fetchSquareList
+import com.zwl.playandroid.http.*
 
 /**
  * Create: 2019-12-31 15:22
@@ -84,6 +85,25 @@ class PlayAndroidRepository(
         }, { error ->
             isRequestSquare = false
             onError(error)
+        })
+    }
+
+    fun requestLogin(user: User, onSuccess: () -> Unit, onError: (error: ResponseError) -> Unit) {
+        login(service, user, { data: Login?, cookie: String? ->
+            if (cookie != null) {
+                CookieHelper.saveCookie(cookie)
+                onSuccess()
+            }
+        }, { error ->
+            CookieHelper.removeCookie()
+        })
+    }
+
+    fun requestFavourite() {
+        fetchFavourite(service, 0, {
+            Log.e("zzzz","PlayAndroidRepository - requestFavourite -> 收藏:$it" )
+        }, {
+
         })
     }
 

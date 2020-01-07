@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.zwl.playandroid.data.PlayAndroidRepository
 import com.zwl.playandroid.ui.browser.BrowserViewModel
+import com.zwl.playandroid.ui.favourite.FavouriteViewModel
+import com.zwl.playandroid.ui.login.AccountViewModel
 import com.zwl.playandroid.ui.square.SquareViewModel
 
 /**
@@ -18,12 +20,18 @@ class PlayAndroidViewModelFactory(private val repository: PlayAndroidRepository)
         if (modelClass.isAssignableFrom(PlayAndroidViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return PlayAndroidViewModel(repository) as T
-        }else if (modelClass.isAssignableFrom(BrowserViewModel::class.java)) {
+        } else if (modelClass.isAssignableFrom(BrowserViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return BrowserViewModel(repository) as T
-        }else if (modelClass.isAssignableFrom(SquareViewModel::class.java)) {
+        } else if (modelClass.isAssignableFrom(SquareViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return SquareViewModel(repository) as T
+        } else if (modelClass.isAssignableFrom(AccountViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return AccountViewModel(repository) as T
+        } else if (modelClass.isAssignableFrom(FavouriteViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return FavouriteViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

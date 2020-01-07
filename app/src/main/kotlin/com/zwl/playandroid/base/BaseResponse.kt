@@ -12,3 +12,4 @@ open class BaseResponse<T>(
     val errorCode: Int = -1,
     val errorMsg: String = ""
 )
+const val RESPONSE_SUCCESS = 0

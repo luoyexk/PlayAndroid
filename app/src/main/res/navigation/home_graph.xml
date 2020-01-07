@@ -41,4 +41,17 @@
             app:argType="com.zwl.playandroid.db.entity.article.Article" />
     </fragment>
 
+    <fragment
+        android:id="@+id/menu_favourite"
+        android:name="com.zwl.playandroid.ui.favourite.FavouriteFragment"
+        android:label="LoginFragment"
+        tools:layout="FavouriteFragment" />
+
+    <fragment
+        android:id="@+id/account_login_register"
+        android:name="com.zwl.playandroid.ui.login.LoginFragment"
+        android:label="Account"
+        tools:layout="@layout/login_fragment" />
+
+
 </navigation>
